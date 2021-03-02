@@ -1,33 +1,36 @@
 package com.cbellmont.ejercicioandroid11
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.cbellmont.ejercicioandroid11.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter : PersonajesAdapter
     private val listaPersonajes = loadData()
 
+    lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         createRecyclerView()
 
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                rbTodos.id -> adapter.updatePersonajes(listaPersonajes)
-                rbBuenos.id -> adapter.updatePersonajes(listaPersonajes.filter { it.esBueno })
-                rbMalos.id -> adapter.updatePersonajes(listaPersonajes.filter { !it.esBueno })
+                binding.rbTodos.id -> adapter.updatePersonajes(listaPersonajes)
+                binding.rbBuenos.id -> adapter.updatePersonajes(listaPersonajes.filter { it.esBueno })
+                binding.rbMalos.id -> adapter.updatePersonajes(listaPersonajes.filter { !it.esBueno })
             }
         }
     }
 
     private fun createRecyclerView() {
         adapter = PersonajesAdapter(listaPersonajes)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 
 
